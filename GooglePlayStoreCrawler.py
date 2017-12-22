@@ -1,8 +1,9 @@
 
 import re
 import json
-import requests
+import time
 import logging
+import requests
 
 class GooglePlayStoreCrawler(object):
 
@@ -27,9 +28,12 @@ class GooglePlayStoreCrawler(object):
     def get_raw_data(self, url=None, data=None):
 
         r = requests.post(url, data=data)
-        if r.status_codes == requests.codes.ok:
+        if r.status_code == requests.codes.ok:
             return r.content
         else:
+            print r
+            print r.content
+            print r.reason
             return ''
 
     def get_reviews(self, app_id=None, host_lang=None, page_num=0, sort_order="newest"):
@@ -50,6 +54,9 @@ class GooglePlayStoreCrawler(object):
 
         url = self.get_review_url
         raw_data = self.get_raw_data(url=url, data=data)
+        
+#        print raw_data
+
         raw_data = json.loads(raw_data[4:])[0][2]
 
         reviews = []
@@ -67,6 +74,7 @@ class GooglePlayStoreCrawler(object):
                     "title": match.group(7),
                     "content": match.group(8)
                 }
+                """
                 print match.group(1)
                 print match.group(2)
                 print match.group(3)
@@ -75,8 +83,10 @@ class GooglePlayStoreCrawler(object):
                 print match.group(6)
                 print match.group(7)
                 print match.group(8)
+                """
                 reviews.append(review)
 
+        time.sleep(5)
         return reviews
 
     def get_newest_reviews(self, app_id=None, host_lang=None, page_num=0):
