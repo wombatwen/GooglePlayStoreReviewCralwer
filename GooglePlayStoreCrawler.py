@@ -93,6 +93,13 @@ class GooglePlayStoreCrawler(object):
 
         return self.get_reviews(app_id, host_lang, page_num, sort_order="newest")
 
+    def get_most_helpful_reviews(self, app_id=None, host_lang=None, page_num=0):
+        
+        return self.get_reviews(app_id, host_lang, page_num, sort_order="helpfulness")
+
+    def get_highest_rating_reviews(self, app_id=None, host_lang=None, page_num=0):
+        
+        return self.get_reviews(app_id, host_lang, page_num, sort_order="rating")
 
 if __name__ == '__main__':
 
